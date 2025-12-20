@@ -17,7 +17,7 @@ namespace ForestTails.Server.Data.Helpers
             {
                 HandleSqlException(sqlException, logger);
             }
-            logger.LogError(exception, $"[CRITICAL] An SQL error occurred, {exception.Message}");
+            logger.LogError(exception, "[CRITICAL] An SQL error occurred, {ErrorMessage}", exception.Message);
             throw exception;
         }
 

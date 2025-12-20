@@ -1,42 +1,85 @@
 ﻿using ForestTails.Server.Data.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ForestTails.Server.Data.Repositories
 {
     public abstract class BaseRepository<T> where T : class
     {
-        protected readonly ForestTailsDbContext context;
+        private readonly IDbContextFactory<ForestTailsDbContext> contextFactory;
         protected readonly ILogger logger;
 
-        protected BaseRepository(ForestTailsDbContext context, ILogger logger)
+        protected BaseRepository(IDbContextFactory<ForestTailsDbContext> contextFactory, ILogger logger)
         {
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.logger = logger;
         }
 
-        protected async Task<T> ExecuteSafeAsync<T>(Func<Task<T>> operation, string operationName)
+        protected async Task<T> ExecuteSafeAsync(Func<ForestTailsDbContext, Task<T>> operation, string operationName)
         {
             try
             {
-                return await operation();
+                using var context = await contextFactory.CreateDbContextAsync();
+                return await operation(context);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                logger.LogError("Concurrency conflict during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (TimeoutException)
+            {
+                logger.LogError("Timeout during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (TaskCanceledException)
+            {
+                logger.LogError("Task canceled during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogError("Operation canceled during repository operation: {OperationName}", operationName);
+                throw;
             }
             catch (Exception exception)
             {
-                logger.LogError($"Repository operation failure: {operationName}");
+                logger.LogError("Repository operation failure: {OperationName}", operationName);
                 SqlErrorHandler.HandleAndThrow(exception, logger);
                 throw;
             }
         }
 
-        protected async Task ExecuteSafeAsync(Func<Task> operation, string operationName)
+        protected async Task ExecuteSafeAsync(Func<ForestTailsDbContext, Task> operation, string operationName)
         {
             try
             {
-                await operation();
+                using var context = await contextFactory.CreateDbContextAsync();
+                await operation(context);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                logger.LogError("Concurrency conflict during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (TimeoutException)
+            {
+                logger.LogError("Timeout during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (TaskCanceledException)
+            {
+                logger.LogError("Task canceled during repository operation: {OperationName}", operationName);
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogError("Operation canceled during repository operation: {OperationName}", operationName);
+                throw;
             }
             catch (Exception exception)
             {
-                logger.LogError($"Repository operation failure: {operationName}");
+                logger.LogError("Repository operation failure: {OperationName}", operationName);
                 SqlErrorHandler.HandleAndThrow(exception, logger);
                 throw;
             }
