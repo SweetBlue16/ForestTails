@@ -11,10 +11,12 @@
         Timeout = 102,
 
         ValidationError = 200,
-        InvalidCredentials = 201,
+        ResourceNotFound = 201,
         Unauthorized = 202,
-        UserNotFound = 203,
-        UserAlreadyExists = 204,
+        ConflictError = 203,
+        InvalidCredentials = 204,
+        UserNotFound = 205,
+        UserAlreadyExists = 206,
 
         InventoryFull = 300,
         ItemNotOwned = 301,
