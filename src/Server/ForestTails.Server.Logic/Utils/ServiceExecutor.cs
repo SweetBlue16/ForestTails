@@ -60,7 +60,7 @@ namespace ForestTails.Server.Logic.Utils
                 if (errorCode != MessageCode.ServerInternalError)
                 {
                     logger.LogWarning(exception, "Infrastructure error controlled in {Operation}: {Message}", operationName, exception.Message);
-                    var userMessage = exception.Message.Contains(":") ? exception.Message.Split(':')[1].Trim() : exception.Message;
+                    var userMessage = exception.Message.Contains(':') ? exception.Message.Split(':')[1].Trim() : exception.Message;
                     return ServiceResponse<T>.FailureResult(errorCode, userMessage);
                 }
                 logger.LogCritical(exception, "Uncontrolled crash in {Operation}", operationName);
@@ -68,11 +68,11 @@ namespace ForestTails.Server.Logic.Utils
             }
         }
 
-        private MessageCode ResolveErrorCodeFromMessage(string message)
+        private static MessageCode ResolveErrorCodeFromMessage(string message)
         {
             if (string.IsNullOrWhiteSpace(message)) return MessageCode.ServerInternalError;
 
-            if (message.StartsWith(SqlErrorTags.DataConflict)) return MessageCode.ConflictError;
+            if (message.StartsWith(SqlErrorTags.DataConflict)) return MessageCode.Conflict;
             if (message.StartsWith(SqlErrorTags.DataConstraintViolation)) return MessageCode.ValidationError;
             if (message.StartsWith(SqlErrorTags.ServerBusy)) return MessageCode.Timeout;
             if (message.StartsWith(SqlErrorTags.SecurityAuthFailure)) return MessageCode.Unauthorized;
