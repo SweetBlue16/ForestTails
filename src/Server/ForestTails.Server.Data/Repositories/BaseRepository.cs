@@ -15,7 +15,7 @@ namespace ForestTails.Server.Data.Repositories
             this.logger = logger;
         }
 
-        protected async Task<T> ExecuteSafeAsync(Func<ForestTailsDbContext, Task<T>> operation, string operationName)
+        protected async Task<TResult> ExecuteSafeAsync<TResult>(Func<ForestTailsDbContext, Task<TResult>> operation, string operationName)
         {
             try
             {
