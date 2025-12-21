@@ -17,8 +17,8 @@ namespace ForestTails.Server.Data.Repositories
 
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(IDbContextFactory<ForestTailsDbContext> contextFactory, ILogger<UserRepository> logger)
-        : base(contextFactory, logger) {}
+        public UserRepository(IDbContextFactory<ForestTailsDbContext> contextFactory, 
+        ILogger<UserRepository> logger) : base(contextFactory, logger) {}
 
         public async Task<User> CreateUserAsync(User user)
         {
