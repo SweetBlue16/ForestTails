@@ -1,4 +1,4 @@
-﻿namespace ForestTails.Server.Data.Enums
+﻿namespace ForestTails.Shared.Enums
 {
     public enum ItemType
     {

@@ -1,5 +1,5 @@
 ﻿using ForestTails.Server.Data.Entities;
-using ForestTails.Server.Data.Enums;
+using ForestTails.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

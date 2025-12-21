@@ -1,4 +1,4 @@
-﻿using ForestTails.Server.Data.Enums;
+﻿using ForestTails.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
