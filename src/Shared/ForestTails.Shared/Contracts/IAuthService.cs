@@ -8,19 +8,28 @@ namespace ForestTails.Shared.Contracts
     public interface IAuthService
     {
         [OperationContract]
-        Task<ServiceResponse<UserDTO>> LoginAsync(LoginRequestDTO request);
+        Task LoginAsync(LoginRequestDTO request);
 
         [OperationContract]
-        Task<ServiceResponse<UserDTO>> RegisterAsync(LoginRequestDTO request);
+        Task RegisterAsync(RegisterRequestDTO request);
 
         [OperationContract]
-        Task<ServiceResponse<bool>> LogoutAsync();
+        Task LogoutAsync();
     }
 
     [ServiceContract]
     public interface IAuthCallback
     {
         [OperationContract(IsOneWay = true)]
-        void OnForceLogout(string reason);
+        void OnLoginResult(ServiceResponse<UserDTO> response);
+
+        [OperationContract(IsOneWay = true)]
+        void OnRegisterResult(ServiceResponse<UserDTO> response);
+
+        [OperationContract(IsOneWay = true)]
+        void OnLogoutResult(ServiceResponse<bool> response);
+
+        [OperationContract(IsOneWay = true)]
+        void OnForceLogout(ServiceResponse<string> reason);
     }
 }
