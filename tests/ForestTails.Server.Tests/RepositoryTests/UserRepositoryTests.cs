@@ -7,7 +7,7 @@ using Moq;
 
 namespace ForestTails.Server.Tests.RepositoryTests
 {
-    public class UserRepositoryTests
+    public class UserRepositoryTests : IDisposable
     {
         private readonly TestDbFactory dbFactory;
         private readonly UserRepository userRepository;
@@ -135,7 +135,7 @@ namespace ForestTails.Server.Tests.RepositoryTests
             return user.Id;
         }
 
-        internal void Dispose()
+        public void Dispose()
         {
             dbFactory.Dispose();
         }
