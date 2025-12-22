@@ -1,4 +1,4 @@
-﻿using ForestTails.Server.Data.Enums;
+﻿using ForestTails.Shared.Enums;
 using Microsoft.Extensions.Logging;
 
 namespace ForestTails.Server.Logic.Utils
