@@ -36,7 +36,6 @@ namespace ForestTails.Server.Tests.RepositoryTests
         {
             await repository.SaveCodeAsync("reuse@test.com", "OLD111", CodeType.Registration);
             await repository.SaveCodeAsync("reuse@test.com", "NEW222", CodeType.Registration);
-
             using var context = dbFactory.CreateDbContext();
             var codes = await context.VerificationCodes.Where(x => x.Email == "reuse@test.com").ToListAsync();
             codes.Should().HaveCount(1);
