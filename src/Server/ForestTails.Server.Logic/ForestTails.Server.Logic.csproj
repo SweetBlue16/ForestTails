@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="CoreWCF.Primitives" Version="1.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ForestTails.Server.Data\ForestTails.Server.Data.csproj" />
     <ProjectReference Include="..\..\Shared\ForestTails.Shared\ForestTails.Shared.csproj" />
   </ItemGroup>
