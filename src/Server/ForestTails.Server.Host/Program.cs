@@ -1,8 +1,12 @@
 ﻿using CoreWCF.Configuration;
+using CoreWCF.Description;
 using ForestTails.Server.Data;
 using ForestTails.Server.Data.Repositories;
 using ForestTails.Server.Logic.Config;
+using ForestTails.Server.Logic.Services;
 using ForestTails.Server.Logic.Utils;
+using ForestTails.Server.Logic.Validators;
+using ForestTails.Shared.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -36,8 +40,11 @@ builder.Services.AddSingleton<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddSingleton<IReportRepository, ReportRepository>();
 
 builder.Services.AddSingleton<ServiceExecutor>();
+builder.Services.AddSingleton<CallbackExecutor>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
+
+builder.Services.AddSingleton<IAuthValidator, AuthValidator>();
 
 builder.Services.AddServiceModelServices();
 builder.Services.AddServiceModelMetadata();
@@ -50,8 +57,17 @@ app.UseServiceModel(serviceBuilder =>
 {
     var binding = new CoreWCF.NetTcpBinding();
     binding.Security.Mode = CoreWCF.SecurityMode.None;
+
+    serviceBuilder.AddService<AuthService>(options =>
+    {
+        options.DebugBehavior.IncludeExceptionDetailInFaults = true;
+    });
+    serviceBuilder.AddServiceEndpoint<AuthService, IAuthService>(binding, "/AuthService");
 });
 
 Log.Information("Starting ForestTails Server Host...");
+
+var serviceMetadataBehavior = app.Services.GetRequiredService<ServiceMetadataBehavior>();
+serviceMetadataBehavior.HttpGetEnabled = true;
 
 app.Run();
