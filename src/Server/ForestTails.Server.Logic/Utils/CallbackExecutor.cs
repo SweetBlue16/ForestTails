@@ -12,7 +12,7 @@ namespace ForestTails.Server.Logic.Utils
             this.logger = logger;
         }
 
-        public void Execute<TCallback>(Action<TCallback> callbackAction) where TCallback : class
+        public virtual void Execute<TCallback>(Action<TCallback> callbackAction) where TCallback : class
         {
             try
             {

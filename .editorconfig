@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# xUnit1012: Null should only be used for nullable parameters
+dotnet_diagnostic.xUnit1012.severity = none
