@@ -24,11 +24,13 @@ namespace ForestTails.Server.Tests.ServiceTests
 
         private readonly ServiceExecutor serviceExecutor;
         private readonly AuthService authService;
+        private readonly SessionManager sessionManager;
 
         public AuthServiceTests()
         {
             serviceExecutor = new ServiceExecutor(new Mock<ILogger<ServiceExecutor>>().Object);
             callbackExecutorMock = new Mock<CallbackExecutor>(new Mock<ILogger<CallbackExecutor>>().Object);
+            sessionManager = new SessionManager(new Mock<ILogger<SessionManager>>().Object);
             callbackExecutorMock.Setup(x => x.Execute(It.IsAny<Action<IAuthCallback>>()))
                 .Callback<Action<IAuthCallback>>(action =>
                 {
@@ -40,7 +42,8 @@ namespace ForestTails.Server.Tests.ServiceTests
                 notificationMock.Object,
                 serviceExecutor,
                 callbackExecutorMock.Object,
-                validatorMock.Object
+                validatorMock.Object,
+                sessionManager
             );
         }
 
