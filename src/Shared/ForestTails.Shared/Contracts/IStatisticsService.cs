@@ -15,7 +15,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IStatisticsCallback
+    public interface IStatisticsCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnTopPlayersReceived(ServiceResponse<List<LeaderboardDTO>> response);

@@ -27,7 +27,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IProfileCallback
+    public interface IProfileCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnMyProfileReceived(ServiceResponse<UserDTO> response);

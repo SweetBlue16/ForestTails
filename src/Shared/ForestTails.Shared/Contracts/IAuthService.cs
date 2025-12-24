@@ -18,7 +18,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IAuthCallback
+    public interface IAuthCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnLoginResult(ServiceResponse<UserDTO> response);

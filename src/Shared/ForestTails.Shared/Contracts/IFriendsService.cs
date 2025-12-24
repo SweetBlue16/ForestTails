@@ -21,7 +21,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IFriendsCallback
+    public interface IFriendsCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnFriendsListReceived(ServiceResponse<List<FriendDTO>> response);

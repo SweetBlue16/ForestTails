@@ -24,7 +24,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IShopCallback
+    public interface IShopCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnCosmeticCatalogReceived(ServiceResponse<List<CosmeticDTO>> response);

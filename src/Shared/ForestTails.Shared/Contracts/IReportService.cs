@@ -12,7 +12,7 @@ namespace ForestTails.Shared.Contracts
     }
 
     [ServiceContract]
-    public interface IReportCallback
+    public interface IReportCallback : ISessionCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnReportSubmittedResult(ServiceResponse<ReportResultDTO> response);
