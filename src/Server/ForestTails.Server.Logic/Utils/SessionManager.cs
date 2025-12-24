@@ -85,7 +85,7 @@ namespace ForestTails.Server.Logic.Utils
                     var state = channel.State;
                     if (state == CommunicationState.Opened || state == CommunicationState.Opening)
                     {
-                        logger.LogDebug("Attemping to close channel. Current state: {State}", state);
+                        logger.LogDebug("Attempting to close channel. Current state: {State}", state);
                         _ = channel.CloseAsync();
                         logger.LogInformation("Close initiated for channel.");
                     }
@@ -128,7 +128,7 @@ namespace ForestTails.Server.Logic.Utils
                     logger.LogError(exception, 
                         "Unexpected exception during channel close. Aborting channel."
                     );
-                    HandleAbortDuringException(channel, "unexpected exception");
+                    HandleAbortDuringException(channel, exception.GetType().Name);
                 }
             }
         }
