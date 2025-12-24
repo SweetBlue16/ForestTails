@@ -23,6 +23,7 @@ namespace ForestTails.Server.Logic.Services
         private readonly ServiceExecutor executor;
         private readonly CallbackExecutor callbackExecutor;
         private readonly IAuthValidator authValidator;
+        private readonly SessionManager sessionManager;
 
         private User? currentUser;
 
@@ -33,7 +34,8 @@ namespace ForestTails.Server.Logic.Services
             INotificationService notificationService,
             ServiceExecutor executor,
             CallbackExecutor callbackExecutor,
-            IAuthValidator authValidator)
+            IAuthValidator authValidator,
+            SessionManager sessionManager)
         {
             this.userRepository = userRepository;
             this.sanctionRepository = sanctionRepository;
@@ -42,6 +44,7 @@ namespace ForestTails.Server.Logic.Services
             this.executor = executor;
             this.callbackExecutor = callbackExecutor;
             this.authValidator = authValidator;
+            this.sessionManager = sessionManager;
         }
 
         public async Task LoginAsync(LoginRequestDTO request)
@@ -64,6 +67,9 @@ namespace ForestTails.Server.Logic.Services
                 await userRepository.UpdateUserAsync(user);
                 currentUser = user;
 
+                var currentCallback = OperationContext.Current.GetCallbackChannel<IAuthCallback>();
+                sessionManager.AddSession(user.Username, currentCallback);
+
                 return new UserDTO
                 {
                     Id = user.Id,
@@ -83,6 +89,7 @@ namespace ForestTails.Server.Logic.Services
             {
                 if (currentUser != null)
                 {
+                    sessionManager.RemoveSession(currentUser.Username);
                     currentUser = null;
                 }
                 return await Task.FromResult(true);
